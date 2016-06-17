@@ -11,12 +11,15 @@ export default () => {
     childRoutes: [
       ...require('./ui/asyncList'),
       ...require('./ui/counter'),
+      ...require('./ui/signup'),
       {
         component: require('./ui/core/LoginRequired'),
         childRoutes: [{
           component: require('./ui/core/AppLayout'),
           childRoutes: [
-            ...require('./ui/dashboard')
+            ...require('./ui/dashboard'),
+            ...require('./ui/timeline'),
+            ...require('./ui/profile'),
           ]
         }]
       }

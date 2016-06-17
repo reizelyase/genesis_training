@@ -5,7 +5,7 @@ export default class SiteLogo extends Component {
   render() {
     return (
       <div className={styles.siteLogo}>
-        <h2>Admin</h2>
+        <h2>React - Redux</h2>
       </div>
     );
   }

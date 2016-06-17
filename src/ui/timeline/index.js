@@ -1,6 +1,6 @@
 export default [{
-  path: '/dashboard',
-  component: require('./Dashboard')
+  path: '/timeline',
+  component: require('./Timeline')
   // getComponent(location, cb) {
   //   require.ensure([], (require) => {
   //     cb(null, require('./Dashboard'));

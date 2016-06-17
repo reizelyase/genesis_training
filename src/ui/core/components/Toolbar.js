@@ -22,7 +22,7 @@ export default class Toolbar extends Component {
 
           <div className={styles.rightContainer}>
             <div className={styles.item}>
-              <p>Hello, {this.props.auth.get('user').get('fullName')}</p>
+              <p>Hello, {this.props.auth.get('user').get('firstName')} {this.props.auth.get('user').get('lastName')}</p>
             </div>
             <div className={styles.item}>
               {(this.props.auth.get('isLoggedIn')) ?

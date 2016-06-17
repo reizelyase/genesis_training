@@ -10,7 +10,8 @@ function formatUrl(path) {
     return 'http://' + config.apiHost + ':' + config.apiPort + adjustedPath;
   }
   // Prepend `/api` to relative URL, to proxy to API server.
-  return '/api' + adjustedPath;
+  // return adjustedPath;
+  return 'http://' + config.apiHost + ':' + config.apiPort + adjustedPath;
 }
 
 /*
@@ -40,6 +41,13 @@ class _ApiClient {
         if (data) {
           request.send(data);
         }
+
+        // if (attach) {
+        //   console.log(data);
+        //   // request.attach('image', data.imageFile, data.imageFile.name);
+        //   request.attach('file', data.imageFile);
+        //   // request.field('filename', data.imageFile.name);
+        // }
 
         request.end((err, { body } = {}) => err ? reject(body || err) : resolve(body));
       }));

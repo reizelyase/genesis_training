@@ -13,7 +13,7 @@ const initialState = new Immutable.fromJS({
   user: {},
   err: {},
   isError: false,
-  isUnauthorized: false
+  isUnauthorized: false,
 });
 
 /**
@@ -35,7 +35,11 @@ export const actionTypes = {
   USER_FORCE_LOGIN: 'USER_FORCE_LOGIN',
   USER_FORCE_LOGIN_WITH_REDIRECT: 'USER_FORCE_LOGIN_WITH_REDIRECT',
 
-  USER_CLEAR_REDIRECT: 'USER_CLEAR_REDIRECT'
+  USER_CLEAR_REDIRECT: 'USER_CLEAR_REDIRECT',
+
+  USER_SIGNUP_REQUEST: 'USER_SIGNUP_REQUEST',
+  USER_SIGNUP_COMPLETE: 'USER_SIGNUP_COMPLETE',
+  USER_SIGNUP_ERROR: 'USER_SIGNUP_ERROR',
 };
 
 /**
@@ -49,8 +53,26 @@ export function loginUser(email, password) {
       actionTypes.USER_LOGIN_COMPLETE,
       actionTypes.USER_LOGIN_ERROR
     ],
-    promise: (client) => client.post('/v1/login', {
+    promise: (client) => client.post('/auth', {
       data: {
+        email,
+        password
+      }
+    })
+  };
+}
+
+export function signUpUser(firstName, lastName, email, password) {
+  return {
+    types: [
+      actionTypes.USER_SIGNUP_REQUEST,
+      actionTypes.USER_SIGNUP_COMPLETE,
+      actionTypes.USER_SIGNUP_ERROR
+    ],
+    promise: (client) => client.post('/users', {
+      data: {
+        firstName,
+        lastName,
         email,
         password
       }
@@ -68,7 +90,7 @@ export function fetchUser() {
         actionTypes.USER_FETCH_ERROR
       ],
       promise: (client) => {
-        return client.get(`/v1/users/me`, {
+        return client.get(`/users/me`, {
           headers: {
             'Accept': 'application/json',
             'Authorization': token
@@ -95,6 +117,7 @@ export function forceLogin() {
       type: actionTypes.USER_FORCE_LOGIN,
     });
 
+    console.log('Forced Login');
     return dispatch(routeActions.replace({ pathname: '/' }));
   };
 }
@@ -135,6 +158,7 @@ export function redirectLoggedInUser() {
     );
   };
 }
+
 
 /**
  * Public: Reducer
@@ -187,9 +211,38 @@ export default (cookie) => {
           redirect: undefined
         });
 
+      case actionTypes.USER_SIGNUP_COMPLETE:
+        return state.merge({
+          user: {},
+          token: null,
+          isLoggedIn: false,
+          isSignedUp: true,
+          err: {},
+          isError: false,
+          isUnauthorized: false,
+        });
+
+      case actionTypes.USER_SIGNUP_ERROR:
+        return state.merge({
+          user: {},
+          token: null,
+          isLoggedIn: false,
+          err: action.error,
+          isError: true,
+          isUnauthorized: false,
+          redirect: undefined
+        });
+
       case actionTypes.USER_FETCH_COMPLETE:
         return state.merge({
           user: action.result
+        });
+
+      case actionTypes.USER_FETCH_ERROR:
+        return state.merge({
+          err: action.error,
+          isError: false,
+          isLoggedIn: false,
         });
 
       case actionTypes.USER_LOGOUT:
@@ -215,7 +268,8 @@ export default (cookie) => {
           isError: false,
           isUnauthorized: false,
           redirectOnLogin: false,
-          redirect: undefined
+          redirect: undefined,
+          isSignedUp: false,
         });
 
       case actionTypes.USER_FORCE_LOGIN_WITH_REDIRECT:

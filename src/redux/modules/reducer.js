@@ -7,6 +7,7 @@ import layout from './layout';
 import notifications from './notifications';
 import asyncList from './asyncList';
 import counter from './counter';
+import post from './post';
 
 // Make sure you add any reducers that are not immutable to this list
 const notImmutable = [
@@ -23,7 +24,8 @@ export default (cookie) => combineReducers({
   layout,
   notifications,
   asyncList,
-  counter
+  counter,
+  post
 });
 
 export function isImmutable(reducerKey) {

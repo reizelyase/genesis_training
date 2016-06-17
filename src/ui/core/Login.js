@@ -29,7 +29,6 @@ export default class Login extends Component {
   render() {
     const { auth } = this.props;
     const errors = [];
-
     if (auth.get('isError')) {
       errors.push(
         <div

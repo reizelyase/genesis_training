@@ -22,7 +22,6 @@ try {
   console.error(err);
 }
 
-
 var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
 
 // merge global and dev-only plugins

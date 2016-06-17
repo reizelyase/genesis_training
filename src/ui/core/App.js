@@ -22,8 +22,12 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     const currentyLoggedIn = this.props.auth.get('isLoggedIn');
     const willBeLoggedIn = nextProps.auth.get('isLoggedIn');
+    const isSignedUp = nextProps.auth.get('isSignedUp');
 
-    if (currentyLoggedIn && !willBeLoggedIn) {
+    console.log(currentyLoggedIn);
+    console.log(willBeLoggedIn);
+
+    if ((currentyLoggedIn || isSignedUp) && !willBeLoggedIn) {
       this.props.forceLogin();
     } else if (!currentyLoggedIn && willBeLoggedIn) {
       this.props.redirectLoggedInUser();

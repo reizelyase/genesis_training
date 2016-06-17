@@ -2,9 +2,15 @@ import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import validate from 'validate.js';
 import { Button } from 'react-bootstrap';
-import RFBSInput from '../components/RFBSInput';
+import RFBSInput from '../core/components/RFBSInput';
 
 const constraints = {
+  firstName: {
+    presence: true
+  },
+  lastName: {
+    presence: true
+  },
   email: {
     presence: true,
     email: {
@@ -17,11 +23,11 @@ const constraints = {
 };
 
 @reduxForm({
-  form: 'login',
-  fields: ['email', 'password'],
+  form: 'signup',
+  fields: ['firstName', 'lastName', 'email', 'password'],
   validate: data => validate(data, constraints) || {}
 })
-export default class LoginForm extends Component {
+export default class SignUpForm extends Component {
 
   static propTypes = {
     fields: PropTypes.object.isRequired,
@@ -32,6 +38,8 @@ export default class LoginForm extends Component {
   render() {
     const {
       fields: {
+        firstName,
+        lastName,
         email,
         password
       },
@@ -42,11 +50,13 @@ export default class LoginForm extends Component {
     return (
       <div>
         <form>
+          <RFBSInput type="text" label="Firstname" field={firstName} />
+          <RFBSInput type="text" label="Lastname" field={lastName} />
           <RFBSInput type="text" label="Email Address" field={email} />
           <RFBSInput type="password" label="Password" field={password} />
           <div className="form-group inline">
-            <Button type="submit" className="pull-left" bsStyle="primary" onClick={handleSubmit} disabled={invalid}>Log In</Button>
-            <a href="/signup" className="btn btn-link pull-right">Sign Up</a>
+            <Button type="submit" className="pull-left" bsStyle="primary" onClick={handleSubmit} disabled={invalid}>Sign Up</Button>
+            <a href="/" className="btn btn-link pull-right">Already have an account? Log in here</a>
           </div>
         </form>
       </div>
